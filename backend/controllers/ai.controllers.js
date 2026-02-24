@@ -4,7 +4,7 @@ const WearableData = require("../models/WearableData");
 exports.getAIInsights = async (req, res) => {
   try {
     // ✅ Correct query
-    const data = await WearableData.find({ userId: req.userId });
+    const data = await WearableData.find({ user: req.userId }).lean();
 
     if (!data.length) {
       return res.json({
