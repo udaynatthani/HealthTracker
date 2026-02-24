@@ -22,7 +22,7 @@ exports.getAIInsights = async (req, res) => {
 
     // 🔴 CALL PYTHON AI
     const aiResponse = await axios.post(
-      "http://127.0.0.1:8000/analyze",
+      "https://healthtracker-l79c.onrender.com/analyze",
       cleanData,
       { timeout: 10000 }
     );
