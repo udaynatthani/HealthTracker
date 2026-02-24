@@ -1,5 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+app.use(cors({
+  origin: ["http://localhost:3000"],
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
 
 const uploadRoutes = require("./routes/upload.routes");
 const analyzeRoutes = require("./routes/analyze.routes");
@@ -7,11 +12,6 @@ const aiRoutes = require("./routes/ai.routes");
 const authRoutes = require("./routes/auth.routes");
 // const cors = require("cors");
 const app = express();
-app.use(cors({
-  origin: ["http://localhost:3000"],
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
-}));
 
 
 app.use("/api", aiRoutes);
