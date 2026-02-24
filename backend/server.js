@@ -4,7 +4,9 @@ const connectDB = require("./config/db");
 const cors = require("cors");
 connectDB();
 app.use(cors({
-    origin: "*"
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
   }));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
