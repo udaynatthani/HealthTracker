@@ -1,4 +1,4 @@
-const API_BASE = process.env.REACT_APP_API_BASE_URL;
+const API_BASE = "https://healthtracker-l79c.onrender.com";
 
 /* ================= UPLOAD CSV ================= */
 export const uploadCSV = async (formData) => {

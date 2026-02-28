@@ -5,7 +5,7 @@ const app = express();   // ✅ create app first
 
 app.use(cors({
   origin: [
-    "process.env.FRONTEND_URL",
+    "https://health-tracker-six-sigma.vercel.app",
     "http://localhost:3000"
   ],
   credentials: true
