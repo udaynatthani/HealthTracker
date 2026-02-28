@@ -1,5 +1,8 @@
 const {analyzeHealthWithAI} = require("../services/ai.service");
-
+const express = require('express');
+const router = express.Router();
+const auth = require("../middleware/auth.middleware");
+const WearableData = require("../models/WearableData");
 router.post("/analyze", auth, async (req, res) => {
     try {
       const data = await WearableData.find({ userId: req.user.id });
