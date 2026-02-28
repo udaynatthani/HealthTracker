@@ -1,10 +1,10 @@
 import pandas as pd
 from sklearn.ensemble import IsolationForest
 
+
 def analyze_health(data):
     df = pd.DataFrame(data)
 
-    # Ensure numeric values
     for col in ["heartRate", "steps", "sleepHours"]:
         df[col] = pd.to_numeric(df.get(col, 0), errors="coerce").fillna(0)
 
@@ -20,19 +20,20 @@ def analyze_health(data):
             insights.append("Abnormal heart rate detected.")
             risk_score += 40
 
-    # Activity
+    # Low activity
     if df["steps"].mean() < 2000:
         insights.append("Low physical activity detected.")
         risk_score += 30
 
-    # Sleep
+    # Low sleep
     if df["sleepHours"].mean() < 6:
         insights.append("Insufficient sleep detected.")
         risk_score += 30
 
-    # Fallback (IMPORTANT)
     if not insights:
-        insights.append("No major health risks detected. Keep maintaining healthy habits.")
+        insights.append(
+            "No major health risks detected. Keep maintaining healthy habits."
+        )
 
     return {
         "risk_score": risk_score,

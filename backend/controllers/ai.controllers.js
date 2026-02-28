@@ -6,7 +6,7 @@ exports.getAIInsights = async (req, res) => {
   try {
     console.log("REQ.USERID:", req.userId);
 
-    if (!req.userId) {
+    if (!req.user || !req.user.id) {
       return res.status(401).json({
         risk_score: "N/A",
         risk_level: "Unauthorized",
@@ -16,9 +16,9 @@ exports.getAIInsights = async (req, res) => {
 
     // ✅ DO NOT force ObjectId unless needed
     const data = await WearableData.find({
-      user: req.userId
+      user: req.user.id
     }).lean();
-
+    
     console.log("DATA LENGTH:", data.length);
 
     if (!data.length) {
