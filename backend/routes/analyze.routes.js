@@ -11,7 +11,7 @@ console.log("Data for analysis:", data);
         return res.status(400).json({error:"No data available for analysis"});
     }
 
-    const result =await analyzeHealth(data);
+    const result =await analyzeHealthWithAI(data);
     res.json(result);
 });
 
