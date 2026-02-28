@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const analyzeHealthWithAI = async (healthData) => {
   const response = await axios.post(
-   process.env.AI_SERVICE_URL + "/analyze",
+    "https://healthtracker-1-o89e.onrender.com/analyze",
     healthData,
     { headers: { "Content-Type": "application/json" } }
   );

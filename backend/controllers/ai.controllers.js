@@ -39,7 +39,7 @@ exports.getAIInsights = async (req, res) => {
 
     try {
       aiResponse = await axios.post(
-        process.env.AI_SERVICE_URL + "/analyze",
+        "https://healthtracker-l79c.onrender.com/analyze",
         cleanData,
         { timeout: 60000 }
       );
