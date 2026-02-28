@@ -3,7 +3,7 @@ const router = express.Router();
 const auth = require("../middleware/auth.middleware");
 const WearableData = require("../models/WearableData");
 const { analyzeHealth } = require('../services/ai.service');
-router.post("/analyze", async (req, res) => {
+router.post("/analyze", auth,async (req, res) => {
     const data = await WearableData.find({userId:req.userId});
 
     if(!data.length){
