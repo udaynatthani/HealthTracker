@@ -4,7 +4,7 @@ const auth = require("../middleware/auth.middleware");
 const WearableData = require("../models/WearableData");
 const {analyzeHealthWithAI} = require("../services/ai.service");
 router.post("/analyze",auth, async (req, res) => {
-    const data = await WearableData.find({userId:req.userId});
+    const data = await WearableData.find({userId: req.user.id});
     console.log("User ID for analysis:", req.userId);
 console.log("Data for analysis:", data);
     if(!data.length){
