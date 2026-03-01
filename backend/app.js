@@ -17,6 +17,7 @@ const uploadRoutes = require("./routes/upload.routes");
 const analyzeRoutes = require("./routes/analyze.routes");
 const aiRoutes = require("./routes/ai.routes");
 const authRoutes = require("./routes/auth.routes");
+app.use("/api", require("./routes/export.routes"));
 
 app.use("/api", aiRoutes);
 app.use("/api", analyzeRoutes);
