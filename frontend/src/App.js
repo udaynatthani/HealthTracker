@@ -4,7 +4,7 @@ import DataList from "./components/DataList";
 import AIInsights from "./components/AIInsights";
 import Auth from "./components/Auth";
 import { fetchData } from "./services/api";
-import {HealthCharts} from "./components/HealthCharts";
+import HealthCharts from "./components/HealthCharts";
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
 
@@ -240,7 +240,7 @@ function App() {
           <div className="app-right">
             <div className="app-card" style={{ height: "100%" }}>
               <DataList data={data} />
-           <HealthCharts/>
+              {data.length > 0 && <HealthCharts />}
             </div>
           </div>
         </main>
