@@ -330,7 +330,7 @@ function App() {
             </div>
 
             <div className="main-pane">
-              {data.length > 0 && <HealthCharts />}
+              {data.length > 0 && <HealthCharts data={data} />}
               <DataList data={data} />
             </div>
           </div>

@@ -101,26 +101,18 @@ const styles = `
   }
 `;
 
-function HealthCharts() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch("https://healthtracker-1-o89e.onrender.com/api/export") 
-      .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch((err) => console.error("Error fetching data:", err));
-  }, []);
-
+function HealthCharts({ data }) {
   if (!data || data.length === 0) return null;
 
   // Sort by date chronologically for charts
-  const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const sortedData = [...data].sort((a, b) => new Date(a.timestamp || a.date) - new Date(b.timestamp || b.date));
 
-  const labels = sortedData.map((item) =>
-    item.date
-      ? new Date(item.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
-      : ""
-  );
+  const labels = sortedData.map((item) => {
+    const dt = item.timestamp || item.date;
+    return dt
+      ? new Date(dt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+      : "";
+  });
 
   const getAvg = (arr) => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : 0;
   
