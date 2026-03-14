@@ -2,38 +2,45 @@ import { useEffect, useState } from "react";
 import { fetchAIInsights } from "../services/api";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
-
   .insights-wrapper {
-    font-family: 'DM Sans', sans-serif;
-    margin-top: 8px;
+    font-family: inherit;
   }
 
   .insights-heading {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: #f0faf4;
-    margin: 0 0 20px 0;
-    letter-spacing: -0.2px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1c1e;
+    margin: 0 0 16px 0;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sparkle-icon {
+    color: #ff9500;
   }
 
   .insights-loading {
     display: flex;
     align-items: center;
-    gap: 10px;
-    color: rgba(255,255,255,0.35);
-    font-size: 13.5px;
-    padding: 20px 0;
+    justify-content: center;
+    gap: 12px;
+    color: #8e8e93;
+    font-size: 14px;
+    padding: 32px 0;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
   }
 
   .insights-spinner {
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(74, 222, 128, 0.2);
-    border-top-color: #4ade80;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #e5e5ea;
+    border-top-color: #ff9500;
     border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    flex-shrink: 0;
+    animation: spin 0.8s linear infinite;
   }
 
   @keyframes spin {
@@ -43,52 +50,60 @@ const styles = `
   .insights-empty {
     text-align: center;
     padding: 32px 20px;
-    color: rgba(255,255,255,0.25);
+    color: #8e8e93;
     font-size: 14px;
-    border: 1px dashed rgba(255,255,255,0.08);
-    border-radius: 14px;
-    background: rgba(255,255,255,0.02);
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+
+  .insights-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    margin-bottom: 24px;
   }
 
   .insights-scores {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
   }
 
-  .insights-score-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 14px;
-    padding: 16px 18px;
+  .insights-score-box {
+    flex: 1;
+    background: #f2f2f7;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .insights-score-label {
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
+    font-size: 12px;
+    font-weight: 600;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.28);
-    margin-bottom: 6px;
+    color: #8e8e93;
+    letter-spacing: 0.05em;
   }
 
   .insights-score-value {
-    font-size: 22px;
-    font-family: 'DM Serif Display', serif;
-    color: #f0faf4;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1c1c1e;
+    letter-spacing: -0.02em;
   }
 
-  .insights-score-value.low    { color: #4ade80; }
-  .insights-score-value.medium { color: #facc15; }
-  .insights-score-value.high   { color: #f87171; }
+  .insights-score-value.low    { color: #34c759; } /* Green */
+  .insights-score-value.medium { color: #ff9500; } /* Orange */
+  .insights-score-value.high   { color: #ff3b30; } /* Red */
 
   .insights-list-label {
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.28);
+    font-size: 14px;
+    font-weight: 600;
+    color: #1c1c1e;
     margin-bottom: 12px;
   }
 
@@ -98,19 +113,20 @@ const styles = `
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .insights-list-item {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    font-size: 13.5px;
-    color: rgba(255,255,255,0.65);
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
+    gap: 12px;
+    font-size: 14px;
+    color: #3a3a3c;
+    background: #fdfdfd;
+    border: 1px solid #f2f2f7;
+    border-left: 4px solid #ff9500;
     border-radius: 12px;
-    padding: 13px 15px;
+    padding: 16px;
     line-height: 1.5;
     animation: fadeUp 0.4s ease both;
   }
@@ -118,15 +134,6 @@ const styles = `
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(8px); }
     to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .insights-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #4ade80;
-    margin-top: 6px;
-    flex-shrink: 0;
   }
 `;
 
@@ -158,29 +165,34 @@ function AIInsights() {
     <>
       <style>{styles}</style>
       <div className="insights-wrapper">
-        <h3 className="insights-heading">AI Health Insights</h3>
+        <h3 className="insights-heading">
+          <span className="sparkle-icon">✨</span>
+          Smart Insights
+        </h3>
 
         {loading && (
           <div className="insights-loading">
             <span className="insights-spinner" />
-            Analyzing your data...
+            Analyzing health patterns...
           </div>
         )}
 
         {!loading && (!insights || !insights.insights?.length) && (
-          <p className="insights-empty">No AI insights available</p>
+          <div className="insights-empty">
+            <p>Upload data to see AI personalized health insights.</p>
+          </div>
         )}
 
         {!loading && insights && insights.insights?.length > 0 && (
-          <>
+          <div className="insights-card">
             <div className="insights-scores">
-              <div className="insights-score-card">
+              <div className="insights-score-box">
                 <div className="insights-score-label">Risk Score</div>
                 <div className={`insights-score-value ${getRiskClass(insights.risk_level)}`}>
                   {insights.risk_score}
                 </div>
               </div>
-              <div className="insights-score-card">
+              <div className="insights-score-box">
                 <div className="insights-score-label">Status</div>
                 <div className={`insights-score-value ${getRiskClass(insights.risk_level)}`}>
                   {insights.risk_level}
@@ -194,14 +206,13 @@ function AIInsights() {
                 <li
                   key={idx}
                   className="insights-list-item"
-                  style={{ animationDelay: `${idx * 0.07}s` }}
+                  style={{ animationDelay: `${idx * 0.05}s` }}
                 >
-                  <span className="insights-dot" />
                   {i}
                 </li>
               ))}
             </ul>
-          </>
+          </div>
         )}
       </div>
     </>

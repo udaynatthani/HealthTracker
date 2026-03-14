@@ -6,48 +6,21 @@ import Auth from "./components/Auth";
 import { fetchData } from "./services/api";
 import HealthCharts from "./components/HealthCharts";
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    background: #0e1a14;
-    color: #e8f5ee;
-    font-family: 'DM Sans', sans-serif;
+    background: #f2f2f7;
+    color: #1c1c1e;
+    font-family: 'Inter', -apple-system, sans-serif;
     min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
   }
 
   .app-root {
     min-height: 100vh;
-    background: #0e1a14;
+    background: #f2f2f7;
     position: relative;
     overflow-x: hidden;
-  }
-
-  .app-root::before {
-    content: '';
-    position: fixed;
-    width: 700px;
-    height: 700px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(74, 222, 128, 0.06) 0%, transparent 70%);
-    top: -200px;
-    right: -200px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .app-root::after {
-    content: '';
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(52, 211, 153, 0.04) 0%, transparent 70%);
-    bottom: -150px;
-    left: -100px;
-    pointer-events: none;
-    z-index: 0;
   }
 
   /* ── TOP NAV ── */
@@ -60,72 +33,164 @@ const styles = `
     justify-content: space-between;
     padding: 0 40px;
     height: 64px;
-    background: rgba(14, 26, 20, 0.85);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
   }
 
   .app-nav-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
 
   .app-nav-icon {
-    width: 34px;
-    height: 34px;
-    background: linear-gradient(135deg, #4ade80, #22c55e);
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    background: #ff2d55;
+    border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
+    color: white;
+    box-shadow: 0 2px 8px rgba(255, 45, 85, 0.3);
   }
 
   .app-nav-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 19px;
-    color: #f0faf4;
-    letter-spacing: -0.2px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1c1e;
+    letter-spacing: -0.02em;
+  }
+
+  .app-user-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .app-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #e5e5ea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8e8e93;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  
+  .app-avatar:hover {
+    background: #d1d1d6;
+  }
+
+  .profile-dropdown {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    width: 200px;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 16px;
+    z-index: 1000;
+    animation: dropDown 0.2s ease;
+    transform-origin: top right;
+  }
+
+  @keyframes dropDown {
+    from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .profile-dropdown-header {
+    margin-bottom: 12px;
+  }
+
+  .profile-dropdown-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1c1c1e;
+  }
+
+  .profile-dropdown-email {
+    font-size: 13px;
+    color: #8e8e93;
+    margin-top: 2px;
+  }
+
+  .profile-dropdown-divider {
+    height: 1px;
+    background: #f2f2f7;
+    margin: 12px -16px;
+  }
+
+  .profile-logout-btn {
+    background: transparent;
+    border: none;
+    color: #ff3b30;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+  }
+
+  .profile-logout-btn:hover {
+    opacity: 0.7;
   }
 
   .app-logout-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.09);
-    color: rgba(255,255,255,0.5);
-    font-size: 13px;
-    font-family: 'DM Sans', sans-serif;
-    padding: 8px 16px;
-    border-radius: 10px;
+    background: transparent;
+    border: none;
+    color: #ff3b30;
+    font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    transition: opacity 0.2s;
   }
 
   .app-logout-btn:hover {
-    background: rgba(248, 113, 113, 0.1);
-    border-color: rgba(248, 113, 113, 0.3);
-    color: #fca5a5;
+    opacity: 0.7;
   }
 
   /* ── MAIN LAYOUT ── */
   .app-main {
     position: relative;
     z-index: 1;
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 40px 80px;
+    padding: 32px 40px 80px;
     display: grid;
-    grid-template-columns: 340px 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-columns: 1fr;
     gap: 24px;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
   }
 
   /* ── CARDS ── */
   .app-card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.07);
+    background: #ffffff;
     border-radius: 20px;
-    padding: 28px 28px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     animation: fadeUp 0.5s ease both;
   }
 
@@ -134,47 +199,46 @@ const styles = `
     to   { opacity: 1; transform: translateY(0); }
   }
 
-  .app-card:nth-child(1) { animation-delay: 0.05s; }
-  .app-card:nth-child(2) { animation-delay: 0.10s; }
-  .app-card:nth-child(3) { animation-delay: 0.15s; }
-
-  .app-card-label {
-    font-size: 10.5px;
-    font-weight: 500;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.25);
+  .app-card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1c1c1e;
     margin-bottom: 20px;
+    letter-spacing: -0.01em;
   }
 
-  /* left column: upload + insights stacked */
-  .app-left {
-    grid-column: 1;
-    grid-row: 1 / 3;
+  .left-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .main-pane {
     display: flex;
     flex-direction: column;
     gap: 24px;
   }
 
-  /* right column: data list */
-  .app-right {
-    grid-column: 2;
-    grid-row: 1 / 3;
+  /* Header Section */
+  .page-header {
+    margin-bottom: 16px;
+  }
+  .page-title {
+    font-size: 34px;
+    font-weight: 700;
+    color: #1c1c1e;
+    letter-spacing: -0.03em;
   }
 
-  /* ── DIVIDER ── */
-  .app-divider {
-    display: none;
-  }
-
-  @media (max-width: 768px) {
-    .app-main {
+  @media (max-width: 900px) {
+    .dashboard-grid {
       grid-template-columns: 1fr;
-      padding: 24px 20px 60px;
     }
-    .app-left, .app-right {
-      grid-column: 1;
-      grid-row: auto;
+  }
+
+  @media (max-width: 600px) {
+    .app-main {
+      padding: 24px 20px 60px;
     }
     .app-nav {
       padding: 0 20px;
@@ -187,6 +251,9 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(
     !!localStorage.getItem("token")
   );
+  const [showProfile, setShowProfile] = useState(false);
+  const userName = localStorage.getItem("userName") || "User";
+  const userEmail = localStorage.getItem("userEmail") || "";
 
   const loadData = async () => {
     const res = await fetchData();
@@ -208,39 +275,63 @@ function App() {
         {/* Nav */}
         <nav className="app-nav">
           <div className="app-nav-brand">
-            <div className="app-nav-icon">🌿</div>
-            <span className="app-nav-title">Smart Health Tracker</span>
+            <div className="app-nav-icon">❤️</div>
+            <span className="app-nav-title">Health</span>
           </div>
-          <button
-            className="app-logout-btn"
-            onClick={() => {
-              localStorage.removeItem("token");
-              setLoggedIn(false);
-            }}
-          >
-            Sign out
-          </button>
+          <div className="app-user-section" style={{ position: 'relative' }}>
+            <div 
+              className="app-avatar" 
+              onClick={() => setShowProfile(!showProfile)}
+            >
+              {userName.charAt(0).toUpperCase()}
+            </div>
+            {showProfile && (
+              <div className="profile-dropdown">
+                <div className="profile-dropdown-header">
+                  <div className="profile-dropdown-name">{userName}</div>
+                  {userEmail && <div className="profile-dropdown-email">{userEmail}</div>}
+                </div>
+                <div className="profile-dropdown-divider"></div>
+                <button
+                  className="profile-logout-btn"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    localStorage.removeItem("userName");
+                    localStorage.removeItem("userEmail");
+                    setLoggedIn(false);
+                    setShowProfile(false);
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                  Log Out
+                </button>
+              </div>
+            )}
+          </div>
         </nav>
 
         {/* Content */}
         <main className="app-main">
-          {/* Left column */}
-          <div className="app-left">
-            <div className="app-card">
-              <p className="app-card-label">Import Data</p>
-              <UploadForm onUpload={loadData} />
-            </div>
-
-            <div className="app-card">
-              <AIInsights />
-            </div>
+          <div className="page-header">
+            <h1 className="page-title">Summary</h1>
           </div>
+          
+          <div className="dashboard-grid">
+            <div className="left-pane">
+              <AIInsights />
+              <div className="app-card" style={{ animationDelay: "0.1s" }}>
+                <h2 className="app-card-title">Add Data</h2>
+                <UploadForm onUpload={loadData} />
+              </div>
+            </div>
 
-          {/* Right column */}
-          <div className="app-right">
-            <div className="app-card" style={{ height: "100%" }}>
-              <DataList data={data} />
+            <div className="main-pane">
               {data.length > 0 && <HealthCharts />}
+              <DataList data={data} />
             </div>
           </div>
         </main>

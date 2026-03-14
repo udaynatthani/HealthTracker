@@ -2,27 +2,26 @@ import { useState } from "react";
 import { uploadCSV } from "../services/api";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
-
   .upload-wrapper {
-    font-family: 'DM Sans', sans-serif;
+    font-family: inherit;
   }
 
   .upload-zone {
-    border: 2px dashed rgba(74, 222, 128, 0.25);
+    border: 2px dashed #d1d1d6;
     border-radius: 16px;
-    padding: 36px 24px;
+    padding: 24px;
     text-align: center;
-    background: rgba(74, 222, 128, 0.03);
-    transition: border-color 0.2s, background 0.2s;
+    background: #fdfdfd;
+    transition: all 0.2s ease;
     cursor: pointer;
     position: relative;
+    margin-bottom: 16px;
   }
 
   .upload-zone:hover,
   .upload-zone.has-file {
-    border-color: rgba(74, 222, 128, 0.5);
-    background: rgba(74, 222, 128, 0.06);
+    border-color: #ff2d55;
+    background: #fffafa;
   }
 
   .upload-zone input[type="file"] {
@@ -35,43 +34,42 @@ const styles = `
   }
 
   .upload-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: #ff2d55;
   }
 
   .upload-zone-title {
     font-size: 14px;
-    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+    color: #1c1c1e;
     margin: 0 0 4px;
   }
 
   .upload-zone-sub {
-    font-size: 12px;
-    color: rgba(255,255,255,0.25);
+    font-size: 13px;
+    color: #8e8e93;
     margin: 0;
   }
 
   .upload-filename {
     margin-top: 10px;
     font-size: 13px;
-    color: #4ade80;
-    font-weight: 500;
+    color: #ff2d55;
+    font-weight: 600;
   }
 
   .upload-btn {
     width: 100%;
-    margin-top: 16px;
-    padding: 13px;
-    background: linear-gradient(135deg, #4ade80, #22c55e);
+    padding: 14px;
+    background: #ff2d55;
     border: none;
-    border-radius: 12px;
-    color: #052e10;
-    font-size: 14px;
-    font-weight: 500;
-    font-family: 'DM Sans', sans-serif;
+    border-radius: 14px;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(74, 222, 128, 0.2);
+    transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -79,23 +77,24 @@ const styles = `
   }
 
   .upload-btn:hover:not(:disabled) {
+    transform: scale(0.98);
     opacity: 0.9;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 24px rgba(74, 222, 128, 0.3);
   }
 
   .upload-btn:disabled {
-    opacity: 0.6;
+    background: #e5e5ea;
+    color: #8e8e93;
     cursor: not-allowed;
+    transform: none;
   }
 
   .upload-spinner {
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(5,46,16,0.3);
-    border-top-color: #052e10;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
     border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+    animation: spin 0.8s linear infinite;
   }
 
   @keyframes spin {
@@ -109,13 +108,17 @@ function UploadForm({ onUpload }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!file) return;
     setLoading(true);
     try {
       const formData = new FormData();
       formData.append("file", file);
       const res = await uploadCSV(formData);
       alert(res.message || "Uploaded");
-      await onUpload();
+      setFile(null); // Clear file after successful upload
+      if (onUpload) {
+          await onUpload();
+      }
     } catch (err) {
       alert(err.message || "Upload failed");
     } finally {
@@ -135,24 +138,30 @@ function UploadForm({ onUpload }) {
               onChange={(e) => setFile(e.target.files[0])}
               required
             />
-            <div className="upload-icon">📂</div>
+            <div className="upload-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            </div>
             <p className="upload-zone-title">
-              {file ? "File selected" : "Drop your CSV here"}
+              {file ? "File ready" : "Upload Data"}
             </p>
             <p className="upload-zone-sub">
-              {file ? "" : "or click to browse"}
+              {file ? "" : "Tap to browse records"}
             </p>
             {file && <p className="upload-filename">{file.name}</p>}
           </div>
 
-          <button className="upload-btn" type="submit" disabled={loading}>
+          <button className="upload-btn" type="submit" disabled={loading || !file}>
             {loading ? (
               <>
                 <span className="upload-spinner" />
-                Uploading...
+                Processing...
               </>
             ) : (
-              <>↑ Upload CSV</>
+              <>Add Records</>
             )}
           </button>
         </form>

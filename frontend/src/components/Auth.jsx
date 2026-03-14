@@ -240,6 +240,10 @@ function Auth({ onAuth }) {
         });
         if (data.token) {
           localStorage.setItem("token", data.token);
+          if (data.user) {
+            localStorage.setItem("userName", data.user.name);
+            localStorage.setItem("userEmail", data.user.email);
+          }
           onAuth();
         } else {
           setError(data.error || "Login failed");
