@@ -5,8 +5,9 @@ const app = express();   // ✅ create app first
 
 app.use(cors({
   origin: [
-    "https://health-tracker-pi-ten.vercel.app/",
-    "http://localhost:3000"
+    "https://health-tracker-pi-ten.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173"
   ],
   credentials: true
 }));
