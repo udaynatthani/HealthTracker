@@ -11,7 +11,7 @@ import {
   Filler
 } from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
-import { API_BASE } from "../services/api";
+// import { API_BASE } from "../services/api";
 
 ChartJS.register(
   LineElement,
