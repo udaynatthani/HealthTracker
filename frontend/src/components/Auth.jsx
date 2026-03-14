@@ -172,7 +172,7 @@ function Auth({ onAuth }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [file, setFile] = useState(null);
+  // const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleSignIn = async (e) => {
