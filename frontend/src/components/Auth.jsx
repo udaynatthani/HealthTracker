@@ -193,7 +193,7 @@ function Auth({ onAuth }) {
     setLoading(true);
     try {
       // your sign-up + optional file upload logic here
-      if (onAuth) await onAuth({ name, email, password, file });
+      if (onAuth) await onAuth({ name, email, password });
     } catch (err) {
       alert(err.message || "Sign up failed");
     } finally {
