@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 
-const app = express();   // ✅ create app first
+const app = express();
 
 app.use(cors({
   origin: [
